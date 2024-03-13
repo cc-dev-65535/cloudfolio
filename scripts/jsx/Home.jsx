@@ -1,22 +1,47 @@
 import { useDropzone } from "react-dropzone";
-import Box from "@mui/material/Box";
+import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 
+function createPostData(file) {
+    const data = new FormData();
+    data.append("image", file);
+    return data;
+}
+
 function FileInput() {
-    const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+    const [uploadFiles, setUploadFiles] = useState([]);
+
+    const { isError, isSuccess, mutateAsync } = useMutation({
+        mutationFn: (file) => {
+            return fetch("/api/image", {
+                method: "POST",
+                // headers: {
+                //     "Content-type": "multipart/form-data",
+                // },
+                body: createPostData(file),
+            });
+        },
+        onSuccess: () => {
+            setUploadFiles([]);
+        },
+    });
+
+    const { getRootProps, getInputProps } = useDropzone({
         maxFiles: 1,
         accept: {
             "image/png": [".png"],
             "image/jpeg": [".jpeg", ".jpg"],
         },
+        onDrop: (acceptedFiles) => {
+            setUploadFiles(acceptedFiles);
+        },
     });
 
-    const files = acceptedFiles.map((file) => (
-        <li key={file.path}>
-            {file.path} - {file.size} bytes
-        </li>
-    ));
+    function sendImage() {
+        mutateAsync(uploadFiles[0]);
+    }
 
     return (
         <Grid
@@ -49,9 +74,19 @@ function FileInput() {
                 alignItems="center"
             >
                 <h4 style={{ marginBottom: 0 }}>Files To Upload:</h4>
-                <ul style={{ padding: 0 }}>{files}</ul>
+                <ul style={{ padding: 0 }}>
+                    {uploadFiles.map((file) => (
+                        <li key={file.path}>
+                            {file.path} - {file.size} bytes
+                        </li>
+                    ))}
+                </ul>
             </Grid>
-            {files.length ? <Button variant="contained">Upload</Button> : null}
+            {uploadFiles.length ? (
+                <Button variant="contained" onClick={sendImage}>
+                    Upload
+                </Button>
+            ) : null}
         </Grid>
     );
 }
