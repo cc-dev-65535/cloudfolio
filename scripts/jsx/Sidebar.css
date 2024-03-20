@@ -1,4 +1,4 @@
-.sidebar {
+/* .sidebar {
   width: 250px;
   background: #ffffff;
   height: 100vh;
@@ -33,4 +33,37 @@
   background-color: #e9ecef;
   color: #495057;
   font-weight: 500;
+} */
+
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background: #fff;
 }
+
+.sidebarHeader {
+  margin-bottom: 1rem;
+}
+
+.sidebarMenu {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarMenu a {
+  padding: 0.5rem 1rem;
+  margin: 0.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 4px;
+  color: #333;
+  transition: background-color 0.2s;
+}
+
+.sidebarMenu a.active, .sidebarMenu a:hover {
+  background-color: #e9ecef;
+}
+

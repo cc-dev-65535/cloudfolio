@@ -1,4 +1,4 @@
-.albumContainer {
+/* .albumContainer {
   padding: 1rem;
   display: flex;
   flex-wrap: wrap;
@@ -33,4 +33,48 @@
 
 .removeButton:hover {
   background-color: #d32f2f;
+} */
+
+
+.albumContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.albumItem {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.5rem;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.albumItem:hover {
+  transform: translateY(-5px);
+}
+
+.albumImage {
+  width: 100%;
+  display: block;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.removeButton {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  background-color: #e53935;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.removeButton:hover {
+  background-color: #c62828;
 }
