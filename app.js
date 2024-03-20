@@ -9,6 +9,7 @@ import {
     DynamoDBDocumentClient,
 } from "@aws-sdk/lib-dynamodb";
 
+
 const client = new DynamoDBClient({
     region: "us-west-2",
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -33,11 +34,12 @@ async function addPhoto(path) {
         TableName: "Photos",
         Item: {
             path: `/${path.replace("public/", "")}`,
+            album: 'all',
         },
     });
 
     const response = await docClient.send(command);
-    console.log(response);
+    // console.log(response);
     return response;
 }
 
@@ -57,6 +59,16 @@ const upload = multer({ storage: storage });
 app.use(express.json());
 app.use(express.static(path.join(path.resolve(), "public")));
 
+app.delete("/api/image/*", async (req, res) => {
+    console.log(req.params);
+    // const photoUrls = await getPhotos();
+    // res.status(200).json({ photos: photoUrls });
+});
+app.get("/api/album/*", async (req, res) => {
+    console.log(req.params);
+    const photoUrls = await getPhotos();
+    res.status(200).json({ photos: photoUrls });
+});
 app.get("/api/image", async (req, res) => {
     const photoUrls = await getPhotos();
     res.status(200).json({ photos: photoUrls });

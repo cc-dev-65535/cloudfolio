@@ -1,9 +1,11 @@
 import { useDropzone } from "react-dropzone";
+import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { queryClient } from "./App.jsx";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import { Typography } from "@mui/material";
 
 function createPostData(file) {
     const data = new FormData();
@@ -25,7 +27,7 @@ function FileInput() {
             });
         },
         onSuccess: () => {
-            queryClient.invalidateQueries('photo');
+            queryClient.invalidateQueries("photo");
             setUploadFiles([]);
         },
     });
@@ -52,6 +54,7 @@ function FileInput() {
             alignContent="center"
             alignItems="center"
         >
+            <Typography variant="h1">CLOUDFOLIO</Typography>
             <Grid
                 {...getRootProps()}
                 container
@@ -99,17 +102,65 @@ async function fetchPhotos() {
 }
 
 function Home() {
+    const expandImage = (path) => {
+        window.location.href = path;
+    };
+
     const { data } = useQuery({
         queryKey: "photo",
         queryFn: () => fetchPhotos(),
     });
 
+    const {
+        isError: isErrorDelete,
+        isSuccess: isSuccessDelete,
+        mutateAsync: mutateDeleteAsync,
+    } = useMutation({
+        mutationFn: (path) => {
+            return fetch("/api/image" + path, {
+                method: "DELETE",
+            });
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries("photo");
+        },
+    });
+
+    const deleteImage = (path) => {
+        mutateDeleteAsync(path);
+    }
+
     return (
         <Grid container flexDirection="column">
             <FileInput />
-            <Grid container sx={{ mt: 4 }}>
+            <Grid container sx={{ mt: 4 }} gap={4}>
                 {data?.photos.map(({ path }) => {
-                    return <img src={path} />;
+                    return (
+                        <Grid
+                            sx={{ width: "min-content" }}
+                            container
+                            flexDirection="column"
+                            alignContent="center"
+                        >
+                            <img
+                                style={{
+                                    border: "1px solid grey",
+                                    cursor: "pointer",
+                                }}
+                                src={path}
+                                height={100}
+                                width={100}
+                                onClick={() => expandImage(path)}
+                            />
+                            <Button
+                                variant="contained"
+                                color="error"
+                                onClick={() => deleteImage(path)}
+                            >
+                                Remove
+                            </Button>
+                        </Grid>
+                    );
                 })}
             </Grid>
         </Grid>
