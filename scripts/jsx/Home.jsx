@@ -6,6 +6,7 @@ import { queryClient } from "./App.jsx";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { Typography } from "@mui/material";
+import './Home.css';
 
 function createPostData(file) {
     const data = new FormData();

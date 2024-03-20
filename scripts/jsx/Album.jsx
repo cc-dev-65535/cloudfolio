@@ -4,6 +4,7 @@ import { queryClient } from "./App.jsx";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { Typography, Box } from "@mui/material";
+import './Album.css';
 
 async function fetchPhotos() {
     // console.log(window.location.pathname);

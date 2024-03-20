@@ -1,6 +1,7 @@
 import Grid from "@mui/material/Grid";
 import { Typography, Box } from "@mui/material";
 import { Outlet, Link } from "react-router-dom";
+import './Sidebar.css';
 
 function Sidebar() {
     return (
