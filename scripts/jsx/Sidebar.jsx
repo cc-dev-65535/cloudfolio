@@ -41,23 +41,37 @@ import HomeIcon from '@mui/icons-material/Home';
 import AlbumIcon from '@mui/icons-material/Album';
 import './Sidebar.css';
 
+// function Sidebar() {
+//     return (
+//         <Grid className="sidebar">
+//             <Typography variant="h5" align="center" className="sidebarHeader">
+//                 CloudFolio
+//             </Typography>
+//             <div className="sidebarMenu">
+//                 <NavLink to="/" className={({ isActive }) => isActive ? "activeLink" : ""}>
+//                     <HomeIcon /> Home
+//                 </NavLink>
+//                 <NavLink to="/album" className={({ isActive }) => isActive ? "activeLink" : ""}>
+//                     <AlbumIcon /> Album
+//                 </NavLink>
+//                 {/* Additional navigation links */}
+//             </div>
+//         </Grid>
+//     );
+// }
+
+
 function Sidebar() {
-    return (
-        <Grid className="sidebar">
-            <Typography variant="h5" align="center" className="sidebarHeader">
-                CloudFolio
-            </Typography>
-            <div className="sidebarMenu">
-                <NavLink to="/" className={({ isActive }) => isActive ? "activeLink" : ""}>
-                    <HomeIcon /> Home
-                </NavLink>
-                <NavLink to="/album" className={({ isActive }) => isActive ? "activeLink" : ""}>
-                    <AlbumIcon /> Album
-                </NavLink>
-                {/* Additional navigation links */}
-            </div>
-        </Grid>
-    );
+  return (
+    <div className="sidebar">
+      <NavLink to="/" className={({ isActive }) => isActive ? "activeLink" : ""}>
+        <HomeIcon /> Home
+      </NavLink>
+      <NavLink to="/album" className={({ isActive }) => isActive ? "activeLink" : ""}>
+        <AlbumIcon /> Album
+      </NavLink>
+    </div>
+  );
 }
 
 export default Sidebar;

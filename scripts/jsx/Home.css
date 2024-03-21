@@ -50,6 +50,9 @@
 }
 
 .uploadArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   border: 2px dashed #5c6bc0;
   border-radius: 8px;
   padding: 3rem;
@@ -64,19 +67,19 @@
 }
 
 .uploadButton {
-  background-color: #3f51b5;
+  background-color: #42a5f5;
   color: white;
-  padding: 0.75rem 1.5rem;
+  border: none;
+  padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.875rem;
-  border: none;
   margin-top: 1rem;
-  transition: background-color 0.2s;
+  font-size: 0.875rem;
+  /* transition: background 0.3s ease; */
 }
 
 .uploadButton:hover {
-  background-color: #303f9f;
+  background-color: #1e88e5;
 }
 
 .fileInput {

@@ -44,6 +44,8 @@
 }
 
 .albumItem {
+  background: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 0.5rem;
@@ -59,7 +61,7 @@
 .albumImage {
   width: 100%;
   display: block;
-  border-radius: 8px;
+  border-radius: 4px;
   margin-bottom: 0.5rem;
 }
 

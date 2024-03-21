@@ -37,10 +37,29 @@
 
 
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  background: #fff;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
-  background: #fff;
+  justify-content: start;
+}
+
+.sidebar a {
+  color: #333;
+  padding: 10px;
+  text-decoration: none;
+  display: block;
+  transition: background-color 0.2s;
+}
+
+.sidebar a.active, .sidebar a:hover {
+  background-color: #f4f4f4;
 }
 
 .sidebarHeader {
