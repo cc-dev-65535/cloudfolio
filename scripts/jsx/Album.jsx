@@ -17,9 +17,28 @@ function Album() {
     };
 
     const { data } = useQuery({
-        queryKey: "photo",
+        queryKey: ["photo", "album"],
         queryFn: () => fetchPhotos(),
     });
+
+    const {
+        isError: isErrorDelete,
+        isSuccess: isSuccessDelete,
+        mutateAsync: mutateDeleteAsync,
+    } = useMutation({
+        mutationFn: (key) => {
+            return fetch("/api/image/" + key, {
+                method: "DELETE",
+            });
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries("photo");
+        },
+    });
+
+    const deleteImage = (key) => {
+        mutateDeleteAsync(key);
+    };
 
     return (
         <Grid container flexDirection="column">
@@ -33,7 +52,12 @@ function Album() {
             <Grid container sx={{ mt: 4 }} gap={4}>
                 {data?.photos.map(({ path }) => {
                     return (
-                        <Grid sx={{ width: "min-content" }} container flexDirection="column" alignContent="center">
+                        <Grid
+                            sx={{ width: "min-content" }}
+                            container
+                            flexDirection="column"
+                            alignContent="center"
+                        >
                             <img
                                 style={{
                                     border: "1px solid grey",
@@ -44,7 +68,11 @@ function Album() {
                                 width={100}
                                 onClick={() => expandImage(path)}
                             />
-                            <Button variant="contained" color="error">
+                            <Button
+                                variant="contained"
+                                color="error"
+                                onClick={() => deleteImage(key)}
+                            >
                                 Remove
                             </Button>
                         </Grid>

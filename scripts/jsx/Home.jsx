@@ -116,8 +116,8 @@ function Home() {
         isSuccess: isSuccessDelete,
         mutateAsync: mutateDeleteAsync,
     } = useMutation({
-        mutationFn: (path) => {
-            return fetch("/api/image" + path, {
+        mutationFn: (key) => {
+            return fetch("/api/image/" + key, {
                 method: "DELETE",
             });
         },
@@ -126,15 +126,15 @@ function Home() {
         },
     });
 
-    const deleteImage = (path) => {
-        mutateDeleteAsync(path);
+    const deleteImage = (key) => {
+        mutateDeleteAsync(key);
     }
 
     return (
         <Grid container flexDirection="column">
             <FileInput />
             <Grid container sx={{ mt: 4 }} gap={4}>
-                {data?.photos.map(({ path }) => {
+                {data?.photos.map(({ path, key }) => {
                     return (
                         <Grid
                             sx={{ width: "min-content" }}
@@ -155,7 +155,7 @@ function Home() {
                             <Button
                                 variant="contained"
                                 color="error"
-                                onClick={() => deleteImage(path)}
+                                onClick={() => deleteImage(key)}
                             >
                                 Remove
                             </Button>
