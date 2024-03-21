@@ -4,7 +4,9 @@ import { queryClient } from "./App.jsx";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { Typography, Box } from "@mui/material";
-import './Album.css';
+import "./Album.css";
+import Image from "./Image.jsx";
+import { useLocation } from "react-router-dom";
 
 async function fetchPhotos() {
     // console.log(window.location.pathname);
@@ -17,8 +19,10 @@ function Album() {
         window.location.href = path;
     };
 
+    const location = useLocation();
+
     const { data } = useQuery({
-        queryKey: ["photo", "album"],
+        queryKey: ["photo", "album", window.location.pathname],
         queryFn: () => fetchPhotos(),
     });
 
@@ -42,7 +46,7 @@ function Album() {
     };
 
     return (
-        <Grid container flexDirection="column">
+        <Grid container flexDirection="column" sx={{ padding: 3 }}>
             <Grid container alignContent="center" alignItems="center">
                 <Box sx={{ width: "100%" }}>
                     <Typography variant="h1" align="center">
@@ -51,32 +55,15 @@ function Album() {
                 </Box>
             </Grid>
             <Grid container sx={{ mt: 4 }} gap={4}>
-                {data?.photos.map(({ path }) => {
+                {data?.photos.map(({ path, key }) => {
                     return (
-                        <Grid
-                            sx={{ width: "min-content" }}
-                            container
-                            flexDirection="column"
-                            alignContent="center"
-                        >
-                            <img
-                                style={{
-                                    border: "1px solid grey",
-                                    cursor: "pointer",
-                                }}
-                                src={path}
-                                height={100}
-                                width={100}
-                                onClick={() => expandImage(path)}
-                            />
-                            <Button
-                                variant="contained"
-                                color="error"
-                                onClick={() => deleteImage(key)}
-                            >
-                                Remove
-                            </Button>
-                        </Grid>
+                        <Image
+                            key={key}
+                            path={path}
+                            imagekey={key}
+                            expandImage={expandImage}
+                            deleteImage={deleteImage}
+                        />
                     );
                 })}
             </Grid>

@@ -20,6 +20,23 @@ const client = new DynamoDBClient({
 });
 const docClient = DynamoDBDocumentClient.from(client);
 
+async function updateImageAlbum(key, name) {
+    const command = new UpdateCommand({
+        TableName: "Photos",
+        Key: {
+            key: key,
+        },
+        UpdateExpression: "set album = :name",
+        ExpressionAttributeValues: {
+            ":name": name,
+        },
+    });
+
+    const response = await docClient.send(command);
+    console.log(response);
+    return response;
+}
+
 async function getAlbums() {
     const command = new QueryCommand({
         KeyConditionExpression: "userkey = :mykey",
@@ -38,7 +55,7 @@ async function addAlbum(name) {
     const queryResponse = await getAlbums();
     console.log(queryResponse);
 
-    queryResponse.push(name)
+    queryResponse.push(name);
 
     const command = new UpdateCommand({
         TableName: "Albums",
@@ -116,6 +133,11 @@ const upload = multer({ storage: storage });
 app.use(express.json());
 app.use(express.static(path.join(path.resolve(), "public")));
 
+app.patch("/api/image/:key/:name", async (req, res) => {
+    console.log(req.params);
+    await updateImageAlbum(req.params["key"], req.params["name"]);
+    res.sendStatus(200);
+});
 app.get("/api/user/album", async (req, res) => {
     const albumNames = await getAlbums();
     res.status(200).json({ albums: albumNames });
@@ -145,6 +167,6 @@ app.get("*", (req, res) => {
     res.sendFile("index.html", { root: path.join(path.resolve(), "public") });
 });
 
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 export default app;

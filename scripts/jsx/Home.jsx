@@ -6,7 +6,8 @@ import { queryClient } from "./App.jsx";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { Typography } from "@mui/material";
-import './Home.css';
+import Image from "./Image.jsx";
+import "./Home.css";
 
 function createPostData(file) {
     const data = new FormData();
@@ -129,38 +130,21 @@ function Home() {
 
     const deleteImage = (key) => {
         mutateDeleteAsync(key);
-    }
+    };
 
     return (
-        <Grid container flexDirection="column">
+        <Grid container flexDirection="column" sx={{ padding: 3 }}>
             <FileInput />
             <Grid container sx={{ mt: 4 }} gap={4}>
-                {data?.photos.map(({ path, key }) => {
+                {data?.photos?.map(({ path, key }) => {
                     return (
-                        <Grid
-                            sx={{ width: "min-content" }}
-                            container
-                            flexDirection="column"
-                            alignContent="center"
-                        >
-                            <img
-                                style={{
-                                    border: "1px solid grey",
-                                    cursor: "pointer",
-                                }}
-                                src={path}
-                                height={100}
-                                width={100}
-                                onClick={() => expandImage(path)}
-                            />
-                            <Button
-                                variant="contained"
-                                color="error"
-                                onClick={() => deleteImage(key)}
-                            >
-                                Remove
-                            </Button>
-                        </Grid>
+                        <Image
+                            key={key}
+                            path={path}
+                            imagekey={key}
+                            expandImage={expandImage}
+                            deleteImage={deleteImage}
+                        />
                     );
                 })}
             </Grid>
