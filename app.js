@@ -145,4 +145,6 @@ app.get("*", (req, res) => {
     res.sendFile("index.html", { root: path.join(path.resolve(), "public") });
 });
 
+app.use(express.static('public'));
+
 export default app;

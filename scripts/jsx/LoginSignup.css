@@ -1,0 +1,16 @@
+.loginSignupContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8rem;
+}
+
+.loginSignupContainer .MuiTextField-root {
+  margin: 1rem;
+  width: 25ch;
+}
+
+.loginSignupContainer .MuiButton-root {
+  margin: 1rem;
+} 
