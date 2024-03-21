@@ -71,6 +71,7 @@ function Image({ path, imagekey, expandImage, deleteImage }) {
                     {data?.albums?.map((name) => {
                         return (
                             <MenuItem
+                                key={name}
                                 onClick={() => {
                                     updatePhotoAlbum(name);
                                     handleClose();
