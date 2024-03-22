@@ -59,11 +59,12 @@ function Album() {
                 {albumName}
             </Typography>
             <Grid container sx={{ mt: 4 }} gap={4}>
-                {data?.photos.map(({ path, key }) => {
+                {data?.photos.map(({ path, key, date }) => {
                     return (
                         <Image
                             key={key}
                             path={path}
+                            date={date}
                             imagekey={key}
                             expandImage={expandImage}
                             deleteImage={deleteImage}

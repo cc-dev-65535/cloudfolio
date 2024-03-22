@@ -1,4 +1,4 @@
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import { IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
@@ -11,7 +11,7 @@ async function fetchAlbums() {
     return response.json();
 }
 
-function Image({ path, imagekey, expandImage, deleteImage }) {
+function Image({ date, path, imagekey, expandImage, deleteImage }) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -56,6 +56,7 @@ function Image({ path, imagekey, expandImage, deleteImage }) {
                 src={path}
                 onClick={() => expandImage(path)}
             />
+            <Typography textAlign="center">{new Date(date).toLocaleString()}</Typography>
             <Grid container wrap="nowrap" gap={2} mt={1}>
                 <Button
                     variant="contained"
