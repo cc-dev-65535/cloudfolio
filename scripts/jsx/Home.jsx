@@ -56,7 +56,6 @@ function FileInput() {
             alignContent="center"
             alignItems="center"
         >
-            <Typography variant="h1">CLOUDFOLIO</Typography>
             <Grid
                 {...getRootProps()}
                 container
@@ -133,7 +132,17 @@ function Home() {
     };
 
     return (
-        <Grid container flexDirection="column" sx={{ padding: 3 }}>
+        <Grid container flexDirection="column" sx={{ padding: 3 }} gap={2}>
+            <Typography
+                variant="h1"
+                textAlign="center"
+                fontFamily="Lobster, cursive"
+                fontWeight={400}
+                fontStyle="normal"
+                fontSize={100}
+            >
+                Cloudfolio
+            </Typography>
             <FileInput />
             <Grid container sx={{ mt: 4 }} gap={4}>
                 {data?.photos?.map(({ path, key }) => {

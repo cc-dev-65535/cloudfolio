@@ -19,7 +19,8 @@ function Album() {
         window.location.href = path;
     };
 
-    const location = useLocation();
+    const { pathname } = useLocation();
+    const albumName = pathname.split("/").at(-1);
 
     const { data } = useQuery({
         queryKey: ["photo", "album", window.location.pathname],
@@ -46,14 +47,17 @@ function Album() {
     };
 
     return (
-        <Grid container flexDirection="column" sx={{ padding: 3 }}>
-            <Grid container alignContent="center" alignItems="center">
-                <Box sx={{ width: "100%" }}>
-                    <Typography variant="h1" align="center">
-                        ALBUM
-                    </Typography>
-                </Box>
-            </Grid>
+        <Grid container flexDirection="column" sx={{ padding: 3 }} gap={2}>
+            <Typography
+                variant="h1"
+                textAlign="center"
+                fontFamily="Courgette, cursive"
+                fontWeight={400}
+                fontStyle="normal"
+                fontSize={60}
+            >
+                {albumName}
+            </Typography>
             <Grid container sx={{ mt: 4 }} gap={4}>
                 {data?.photos.map(({ path, key }) => {
                     return (

@@ -77,7 +77,7 @@ function Image({ path, imagekey, expandImage, deleteImage }) {
                                     handleClose();
                                 }}
                             >
-                                {name}
+                                {(name === 'all') ? 'Home' : name}
                             </MenuItem>
                         );
                     })}

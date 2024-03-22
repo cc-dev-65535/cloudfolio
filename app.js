@@ -20,6 +20,13 @@ const client = new DynamoDBClient({
 });
 const docClient = DynamoDBDocumentClient.from(client);
 
+// TODO: figure out how to do sorting on dynamodb instead of here
+const sortByDate = (items) => {
+    return items.toSorted(({ date: firstDate }, { date: secondDate }) => {
+        return firstDate < secondDate ? 1 : -1;
+    });
+};
+
 async function updateImageAlbum(key, name) {
     const command = new UpdateCommand({
         TableName: "Photos",
@@ -33,7 +40,6 @@ async function updateImageAlbum(key, name) {
     });
 
     const response = await docClient.send(command);
-    console.log(response);
     return response;
 }
 
@@ -47,13 +53,11 @@ async function getAlbums() {
     });
 
     const response = await docClient.send(command);
-    console.log(response);
     return response.Items[0].albums;
 }
 
 async function addAlbum(name) {
     const queryResponse = await getAlbums();
-    console.log(queryResponse);
 
     queryResponse.push(name);
 
@@ -69,12 +73,10 @@ async function addAlbum(name) {
     });
 
     const response = await docClient.send(command);
-    console.log(response);
     return response;
 }
 
 async function deletePhoto(key) {
-    console.log(key);
     const command = new DeleteCommand({
         TableName: "Photos",
         Key: {
@@ -83,12 +85,10 @@ async function deletePhoto(key) {
     });
 
     const response = await docClient.send(command);
-    console.log(response);
     return response;
 }
 
 async function getPhotos(album) {
-    // console.log(album);
     const command = new ScanCommand({
         TableName: "Photos",
         ExpressionAttributeValues: {
@@ -98,22 +98,22 @@ async function getPhotos(album) {
     });
 
     const { Items: items } = await docClient.send(command);
-    return items;
+    const sortedItems = sortByDate(items);
+    return sortedItems;
 }
 
 async function addPhoto(path) {
-    // console.log(path);
     const command = new PutCommand({
         TableName: "Photos",
         Item: {
-            key: `${Math.floor(Math.random() * 10000)}`,
+            key: `${Math.floor(Math.random() * 1000000)}`,
             path: `/${path.replace("public/", "")}`,
             album: "all",
+            date: new Date().toISOString(),
         },
     });
 
     const response = await docClient.send(command);
-    // console.log(response);
     return response;
 }
 
@@ -134,7 +134,6 @@ app.use(express.json());
 app.use(express.static(path.join(path.resolve(), "public")));
 
 app.patch("/api/image/:key/:name", async (req, res) => {
-    console.log(req.params);
     await updateImageAlbum(req.params["key"], req.params["name"]);
     res.sendStatus(200);
 });
@@ -151,7 +150,6 @@ app.delete("/api/image/*", async (req, res) => {
     res.sendStatus(200);
 });
 app.get("/api/album/*", async (req, res) => {
-    // console.log(req.params);
     const photoUrls = await getPhotos(req.params["0"]);
     res.status(200).json({ photos: photoUrls });
 });

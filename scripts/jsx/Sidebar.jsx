@@ -99,8 +99,10 @@ function Sidebar() {
                                     isActive ? "activeLink" : ""
                                 }
                             >
-                                {name === "all" ? <HomeIcon /> : <AlbumIcon />}
-                                {name === "all" ? "Home" : name}
+                                <Grid container alignContent="center" alignItems="center" gap={1}>
+                                    {name === "all" ? <HomeIcon /> : <AlbumIcon />}
+                                    {name === "all" ? "Home" : name}
+                                </Grid>
                             </NavLink>
                         </Grid>
                     );
@@ -114,7 +116,7 @@ function Sidebar() {
                     value={albumName}
                     onChange={(e) => setAlbumName(e.target.value)}
                 />
-                <Button variant="contained" onClick={() => addAlbum()}>
+                <Button sx={{ mt: 1 }} variant="contained" onClick={() => addAlbum()}>
                     Add Album
                 </Button>
             </Grid>

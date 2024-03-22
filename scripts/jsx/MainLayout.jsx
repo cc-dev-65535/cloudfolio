@@ -5,9 +5,9 @@ import { Box, AppBar, Grid, Toolbar, Button } from "@mui/material";
 function MainLayout() {
     return (
         <Grid>
-            <AppBar position="static">
+            {/* <AppBar position="static">
                 <Toolbar>
-                    <Box sx={{ flexGrow: 1 }}>{/* Left-aligned items */}</Box>
+                    <Box sx={{ flexGrow: 1 }}></Box>
                     <Box sx={{ display: "flex" }}>
                         <Button color="inherit" component={Link} to="/signup">
                             Sign Up
@@ -17,7 +17,7 @@ function MainLayout() {
                         </Button>
                     </Box>
                 </Toolbar>
-            </AppBar>
+            </AppBar> */}
             <Grid container flexWrap="nowrap">
                 <Sidebar />
                 <Outlet />
