@@ -10,6 +10,26 @@ import {
     UpdateCommand,
     DynamoDBDocumentClient,
 } from "@aws-sdk/lib-dynamodb";
+import { CognitoJwtVerifier } from "aws-jwt-verify";
+
+const verifier = CognitoJwtVerifier.create({
+    userPoolId: "us-west-2_jERIkWzhR",
+    tokenUse: "access",
+    clientId: "5qatetkqk6qpcimn3q2h5ah58u",
+});
+
+const validateJwt = async function (req, res, next) {
+    try {
+        const payload = await verifier.verify(req.headers.authorization);
+        console.log("Token is valid. Payload:", payload);
+    } catch {
+        console.log("Token not valid!");
+        res.sendStatus(400);
+        return;
+    }
+
+    next();
+};
 
 const client = new DynamoDBClient({
     region: "us-west-2",
@@ -153,7 +173,7 @@ app.get("/api/album/*", async (req, res) => {
     const photoUrls = await getPhotos(req.params["0"]);
     res.status(200).json({ photos: photoUrls });
 });
-app.get("/api/image", async (req, res) => {
+app.get("/api/image", validateJwt, async (req, res) => {
     const photoUrls = await getPhotos("all");
     res.status(200).json({ photos: photoUrls });
 });

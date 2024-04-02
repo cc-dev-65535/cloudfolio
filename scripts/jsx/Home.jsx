@@ -1,5 +1,6 @@
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
+import { fetchAuthSession } from "aws-amplify/auth";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { queryClient } from "./App.jsx";
@@ -98,7 +99,15 @@ function FileInput() {
 }
 
 async function fetchPhotos() {
-    const response = await fetch("/api/image");
+    const { tokens } = await fetchAuthSession();
+    // console.log(tokens);
+    const token = tokens?.accessToken?.toString();
+    // console.log(token);
+    const response = await fetch("/api/image", {
+        headers: {
+            Authorization: token,
+        },
+    });
     return response.json();
 }
 
@@ -150,7 +159,7 @@ function Home() {
                         <Image
                             key={key}
                             path={path}
-                            date={date} 
+                            date={date}
                             imagekey={key}
                             expandImage={expandImage}
                             deleteImage={deleteImage}
