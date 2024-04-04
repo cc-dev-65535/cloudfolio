@@ -69,7 +69,7 @@ function Image({ date, path, imagekey, expandImage, deleteImage }) {
                     border: "1px solid grey",
                     cursor: "pointer",
                 }}
-                src={path}
+                src={`/${path}`}
                 onClick={() => expandImage(path)}
             />
             <Typography textAlign="center">

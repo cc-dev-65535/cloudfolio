@@ -156,4 +156,6 @@ img {
   text-decoration: underline;
 }
 
-
+[data-amplify-authenticator] {
+  height: 100vh;
+}

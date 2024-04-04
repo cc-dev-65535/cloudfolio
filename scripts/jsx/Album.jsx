@@ -24,7 +24,7 @@ async function fetchPhotos() {
 
 function Album() {
     const expandImage = (path) => {
-        window.location.href = path;
+        window.location.href = `/${path}`;
     };
 
     const { pathname } = useLocation();

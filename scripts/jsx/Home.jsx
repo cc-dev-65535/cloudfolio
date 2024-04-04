@@ -120,7 +120,7 @@ async function fetchPhotos() {
 
 function Home() {
     const expandImage = (path) => {
-        window.location.href = path;
+        window.location.href = `/${path}`;
     };
 
     const { data } = useQuery({

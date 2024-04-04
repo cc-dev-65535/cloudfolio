@@ -10,6 +10,7 @@ import {
     UpdateCommand,
     DynamoDBDocumentClient,
 } from "@aws-sdk/lib-dynamodb";
+import { copyFile } from "node:fs/promises";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
 
 const verifier = CognitoJwtVerifier.create({
@@ -17,6 +18,17 @@ const verifier = CognitoJwtVerifier.create({
     tokenUse: "access",
     clientId: "5qatetkqk6qpcimn3q2h5ah58u",
 });
+
+const copyFiles = async (items) => {
+    for (const item of items) {
+        const pathFrom = `${item.path.replace("uploads/", "/data/")}`;
+        const pathTo = `${path.resolve()}/public/${item.path}`;
+        console.log(pathFrom);
+        console.log(pathTo);
+        console.log(path.resolve());
+        await copyFile(pathFrom, pathTo);
+    }
+};
 
 const validateJwt = async function (req, res, next) {
     try {
@@ -35,9 +47,7 @@ const validateJwt = async function (req, res, next) {
 const client = new DynamoDBClient({
     region: "us-west-2",
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    // accessKeyId,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    // secretAccessKey,
 });
 const docClient = DynamoDBDocumentClient.from(client);
 
@@ -216,6 +226,8 @@ async function getPhotos(album, username) {
     const response = await docClient.send(command);
     const filteredPhotos = filterPhotos(response.Items[0].photos, album);
     const sortedItems = sortByDate(filteredPhotos);
+
+    await copyFiles(sortedItems);
     return sortedItems;
 }
 
@@ -246,7 +258,8 @@ async function addPhoto(path, username) {
 
     queryResponse.push({
         key: `${Math.floor(Math.random() * 10000000)}`,
-        path: `/${path.replace("public/", "")}`,
+        // path: `/${path.replace("public/", "")}`,
+        path: `${path.replace("/data/", "uploads/")}`,
         album: "all",
         date: new Date().toISOString(),
     });
@@ -268,7 +281,7 @@ async function addPhoto(path, username) {
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "./public/uploads");
+        cb(null, "/data");
     },
     filename: function (req, file, cb) {
         const filename = file.originalname;
