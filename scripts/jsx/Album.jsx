@@ -6,11 +6,19 @@ import Grid from "@mui/material/Grid";
 import { Typography, Box } from "@mui/material";
 import "./Album.css";
 import Image from "./Image.jsx";
+import { fetchAuthSession } from "aws-amplify/auth";
 import { useLocation } from "react-router-dom";
 
 async function fetchPhotos() {
+    const { tokens } = await fetchAuthSession();
+    // console.log(tokens);
+    const token = tokens?.accessToken?.toString();
     // console.log(window.location.pathname);
-    const response = await fetch("/api" + window.location.pathname);
+    const response = await fetch("/api" + window.location.pathname, {
+        headers: {
+            Authorization: token,
+        },
+    });
     return response.json();
 }
 
@@ -32,9 +40,16 @@ function Album() {
         isSuccess: isSuccessDelete,
         mutateAsync: mutateDeleteAsync,
     } = useMutation({
-        mutationFn: (key) => {
+        mutationFn: async (key) => {
+            const { tokens } = await fetchAuthSession();
+            // console.log(tokens);
+            const token = tokens?.accessToken?.toString();
+
             return fetch("/api/image/" + key, {
                 method: "DELETE",
+                headers: {
+                    Authorization: token,
+                },
             });
         },
         onSuccess: () => {

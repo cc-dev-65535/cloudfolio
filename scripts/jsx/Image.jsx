@@ -5,9 +5,18 @@ import Grid from "@mui/material/Grid";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient } from "./App.jsx";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 async function fetchAlbums() {
-    const response = await fetch("/api/user/album");
+    const { tokens } = await fetchAuthSession();
+    // console.log(tokens);
+    const token = tokens?.accessToken?.toString();
+
+    const response = await fetch("/api/user/album", {
+        headers: {
+            Authorization: token,
+        },
+    });
     return response.json();
 }
 
@@ -27,9 +36,16 @@ function Image({ date, path, imagekey, expandImage, deleteImage }) {
     });
 
     const { isError, isSuccess, mutateAsync } = useMutation({
-        mutationFn: ({ imagekey, name }) => {
+        mutationFn: async ({ imagekey, name }) => {
+            const { tokens } = await fetchAuthSession();
+            // console.log(tokens);
+            const token = tokens?.accessToken?.toString();
+
             return fetch(`/api/image/${imagekey}/${name}`, {
                 method: "PATCH",
+                headers: {
+                    Authorization: token,
+                },
             });
         },
         onSuccess: () => {
@@ -56,7 +72,9 @@ function Image({ date, path, imagekey, expandImage, deleteImage }) {
                 src={path}
                 onClick={() => expandImage(path)}
             />
-            <Typography textAlign="center">{new Date(date).toLocaleString()}</Typography>
+            <Typography textAlign="center">
+                {new Date(date).toLocaleString()}
+            </Typography>
             <Grid container wrap="nowrap" gap={2} mt={1}>
                 <Button
                     variant="contained"
@@ -78,7 +96,7 @@ function Image({ date, path, imagekey, expandImage, deleteImage }) {
                                     handleClose();
                                 }}
                             >
-                                {(name === 'all') ? 'Home' : name}
+                                {name === "all" ? "Home" : name}
                             </MenuItem>
                         );
                     })}

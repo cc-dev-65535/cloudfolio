@@ -20,12 +20,19 @@ function FileInput() {
     const [uploadFiles, setUploadFiles] = useState([]);
 
     const { isError, isSuccess, mutateAsync } = useMutation({
-        mutationFn: (file) => {
+        mutationFn: async (file) => {
+            const { tokens } = await fetchAuthSession();
+            // console.log(tokens);
+            const token = tokens?.accessToken?.toString();
+
             return fetch("/api/image", {
                 method: "POST",
                 // headers: {
                 //     "Content-type": "multipart/form-data",
                 // },
+                headers: {
+                    Authorization: token,
+                },
                 body: createPostData(file),
             });
         },
@@ -126,9 +133,16 @@ function Home() {
         isSuccess: isSuccessDelete,
         mutateAsync: mutateDeleteAsync,
     } = useMutation({
-        mutationFn: (key) => {
+        mutationFn: async (key) => {
+            const { tokens } = await fetchAuthSession();
+            // console.log(tokens);
+            const token = tokens?.accessToken?.toString();
+
             return fetch("/api/image/" + key, {
                 method: "DELETE",
+                headers: {
+                    Authorization: token,
+                },
             });
         },
         onSuccess: () => {

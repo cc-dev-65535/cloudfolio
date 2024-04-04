@@ -47,10 +47,19 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { NavLink } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import AlbumIcon from "@mui/icons-material/Album";
+import { fetchAuthSession } from "aws-amplify/auth";
 import "./Sidebar.css";
 
 async function fetchAlbums() {
-    const response = await fetch("/api/user/album");
+    const { tokens } = await fetchAuthSession();
+    // console.log(tokens);
+    const token = tokens?.accessToken?.toString();
+
+    const response = await fetch("/api/user/album", {
+        headers: {
+            Authorization: token,
+        },
+    });
     return response.json();
 }
 
@@ -63,9 +72,16 @@ function Sidebar() {
     });
 
     const { isError, isSuccess, mutateAsync } = useMutation({
-        mutationFn: (name) => {
+        mutationFn: async (name) => {
+            const { tokens } = await fetchAuthSession();
+            // console.log(tokens);
+            const token = tokens?.accessToken?.toString();
+
             return fetch("/api/user/album/" + name, {
                 method: "PATCH",
+                headers: {
+                    Authorization: token,
+                },
             });
         },
         onSuccess: () => {
@@ -99,8 +115,17 @@ function Sidebar() {
                                     isActive ? "activeLink" : ""
                                 }
                             >
-                                <Grid container alignContent="center" alignItems="center" gap={1}>
-                                    {name === "all" ? <HomeIcon /> : <AlbumIcon />}
+                                <Grid
+                                    container
+                                    alignContent="center"
+                                    alignItems="center"
+                                    gap={1}
+                                >
+                                    {name === "all" ? (
+                                        <HomeIcon />
+                                    ) : (
+                                        <AlbumIcon />
+                                    )}
                                     {name === "all" ? "Home" : name}
                                 </Grid>
                             </NavLink>
@@ -116,7 +141,11 @@ function Sidebar() {
                     value={albumName}
                     onChange={(e) => setAlbumName(e.target.value)}
                 />
-                <Button sx={{ mt: 1 }} variant="contained" onClick={() => addAlbum()}>
+                <Button
+                    sx={{ mt: 1 }}
+                    variant="contained"
+                    onClick={() => addAlbum()}
+                >
                     Add Album
                 </Button>
             </Grid>
