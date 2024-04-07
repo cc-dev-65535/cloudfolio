@@ -23,9 +23,6 @@ const copyFiles = async (items) => {
     for (const item of items) {
         const pathFrom = `${item.path.replace("uploads/", "/data/")}`;
         const pathTo = `${path.resolve()}/public/${item.path}`;
-        console.log(pathFrom);
-        console.log(pathTo);
-        console.log(path.resolve());
         await copyFile(pathFrom, pathTo);
     }
 };
@@ -51,14 +48,12 @@ const client = new DynamoDBClient({
 });
 const docClient = DynamoDBDocumentClient.from(client);
 
-// TODO: figure out how to do sorting on dynamodb instead of here
 const sortByDate = (items) => {
     return items.toSorted(({ date: firstDate }, { date: secondDate }) => {
         return firstDate < secondDate ? 1 : -1;
     });
 };
 
-// TODO: figure out how to do filtering on dynamodb instead of here
 const filterPhotos = (items, album) => {
     return items.filter((item) => item.album === album);
 };
