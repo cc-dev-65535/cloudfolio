@@ -159,3 +159,79 @@ img {
 [data-amplify-authenticator] {
   height: 100vh;
 }
+
+/* Add styles for the AWS Amplify Authenticator */
+[data-amplify-authenticator] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+[data-amplify-authenticator] .amplify-container {
+  max-width: 500px;
+  width: 100%;
+  background: #fff;
+  color: #373655;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.2);
+  padding: 2rem; 
+}
+
+[data-amplify-authenticator] .amplify-form-header,
+[data-amplify-authenticator] .amplify-form-section {
+  color: #373655;
+}
+
+[data-amplify-authenticator] .amplify-button {
+  background-color: #5567db; /* Primary button color */
+  color: #ffffff; /* White text on the buttons */
+  border: none; /* Removes default border */
+  border-radius: 4px; /* Rounded button corners */
+  padding: 10px 20px; /* Button padding for a larger clickable area */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  transition: background-color 0.3s ease;
+}
+
+[data-amplify-authenticator] .amplify-button:hover {
+  background-color: #aab0d1; /* Lighter shade on hover */
+}
+
+[data-amplify-authenticator] .amplify-input,
+[data-amplify-authenticator] .amplify-form-row {
+  border-radius: 4px; /* Rounded corners for inputs */
+}
+
+[data-amplify-authenticator] .amplify-label {
+  color: #373655; /* Making sure labels are readable */
+}
+
+body[data-amplify-authenticator] {
+  height: auto;
+  min-height: 100vh;
+}
+
+[data-amplify-authenticator] .amplify-tab {
+  background-color: #373655;
+}
+
+[data-amplify-authenticator] .amplify-tab:hover {
+  background-color: #5567db;
+}
+
+[data-amplify-authenticator] .amplify-tab-active {
+  background-color: #859fdb;
+  color: white;
+}
+
+[data-amplify-authenticator] .amplify-tab-active:after {
+  content: '';
+  display: block;
+  height: 2px;
+  background-color: #aab0d1;
+  transition: background-color 0.3s ease;
+}
+
+[data-amplify-authenticator] .amplify-colors-font--interactive {
+  color: #5567db;
+}
