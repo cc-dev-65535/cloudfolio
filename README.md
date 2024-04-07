@@ -47,6 +47,8 @@ Cloudfolio is deployed on AWS, taking advantage of Elastic Beanstalk for ease of
 
 To get started with Cloudfolio, simply sign up, log in, and begin uploading your photos. It's that easy!
 
+![Account Creation Screenshot](./demoPictures/demo_account.png)
+
 ## Comparison with Other Solutions
 
 While solutions like Google Photos and Apple's iCloud offer cloud storage, Cloudfolio stands out with its customizable features and user-centric design. Our advanced privacy controls and personalized photo tagging make managing your digital memories a breeze.
