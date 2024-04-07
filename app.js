@@ -59,12 +59,6 @@ const filterPhotos = (items, album) => {
 };
 
 async function deletePhoto(key, username) {
-    // const command = new DeleteCommand({
-    //     TableName: "Photos",
-    //     Key: {
-    //         key: key,
-    //     },
-    // });
     const queryCommand = new QueryCommand({
         KeyConditionExpression: "username = :mykey",
         ExpressionAttributeValues: {
@@ -96,17 +90,6 @@ async function deletePhoto(key, username) {
 
 async function updateImageAlbum(key, name, username) {
     const queryResponse = await getExistingPhotos(username);
-
-    // const command = new UpdateCommand({
-    //     TableName: "Photos",
-    //     Key: {
-    //         key: key,
-    //     },
-    //     UpdateExpression: "set album = :name",
-    //     ExpressionAttributeValues: {
-    //         ":name": name,
-    //     },
-    // });
     const itemIndex = queryResponse.findIndex((item) => item.key === key);
     const itemToChange = queryResponse.find((item) => item.key === key);
     itemToChange.album = name;
@@ -130,13 +113,6 @@ async function updateImageAlbum(key, name, username) {
 }
 
 async function getAlbums(username) {
-    // const command = new QueryCommand({
-    //     KeyConditionExpression: "userkey = :mykey",
-    //     ExpressionAttributeValues: {
-    //         ":mykey": "1",
-    //     },
-    //     TableName: "Albums",
-    // });
 
     const command = new QueryCommand({
         KeyConditionExpression: "username = :mykey",
@@ -154,17 +130,6 @@ async function addAlbum(name, username) {
     const queryResponse = await getAlbums(username);
 
     queryResponse.push(name);
-
-    // const command = new UpdateCommand({
-    //     TableName: "Albums",
-    //     Key: {
-    //         userkey: "1",
-    //     },
-    //     UpdateExpression: "set albums = :list",
-    //     ExpressionAttributeValues: {
-    //         ":list": queryResponse,
-    //     },
-    // });
 
     const command = new UpdateCommand({
         TableName: "Users",
@@ -240,15 +205,6 @@ async function getExistingPhotos(username) {
 }
 
 async function addPhoto(path, username) {
-    // const command = new PutCommand({
-    //     TableName: "Photos",
-    //     Item: {
-    //         key: `${Math.floor(Math.random() * 1000000)}`,
-    //         path: `/${path.replace("public/", "")}`,
-    //         album: "all",
-    //         date: new Date().toISOString(),
-    //     },
-    // });
     const queryResponse = await getExistingPhotos(username);
 
     queryResponse.push({
